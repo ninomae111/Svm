@@ -126,7 +126,7 @@ if st.button("Predict"):
     st.write(advice)
 
     # SHAP Explanation (optional)
-    explainer = shap.KernelExplainer(model.predict_proba, shap.sample(features, nsamples=100))
+    explainer = shap.KernelExplainer(model.predict_proba, features)
     shap_values = explainer.shap_values(features)
 
     # 输出 SHAP 值的形状以进行调试
@@ -138,7 +138,7 @@ if st.button("Predict"):
 
     # Check if SHAP values match the feature length
     if shap_values_for_class.shape[1] == len(feature_names):
-        shap.force_plot(explainer.expected_value[class_index], shap_values_for_class[0], features.iloc[0], feature_names=feature_names, matplotlib=True)
+        shap.force_plot(explainer.expected_value[class_index], shap_values_for_class[1], features.iloc[1], feature_names=feature_names, matplotlib=True)
         st.pyplot(plt.gcf())
     else:
         st.error("Mismatch between feature and SHAP values dimensions.")
