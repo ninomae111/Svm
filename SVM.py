@@ -125,6 +125,19 @@ print("custom_data is:")
 print(custom_data)
 print("normal_data is:")
 print(feature_values)
+
+# 检查 custom_data 是否有缺失值或无效值
+print(custom_data.isnull().sum())  # 检查缺失值
+print(np.isfinite(custom_data).all())  # 检查无效值
+
+# 确保数据类型正确
+print(custom_data.dtypes)
+
+# 如果发现问题，您可以使用以下方式处理数据
+custom_data = custom_data.dropna()  # 删除缺失值行
+custom_data = custom_data.apply(pd.to_numeric, errors='coerce')  # 将所有列转换为数值类型
+custom_data = custom_data.fillna(0)  # 使用0替换所有缺失值
+
 custom_data = pd.DataFrame(custom_data, columns=X_train.columns)
 
 # 创建 SHAP Explainer 对象
