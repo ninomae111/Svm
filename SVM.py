@@ -110,8 +110,8 @@ if st.button("Predict"):
     st.write(advice)
 
     # SHAP Explanation (optional)
-    explainer = shap.KernelExplainer(model.predict_proba, features)
-    shap_values = explainer.shap_values(features)
+    explainer = shap.KernelExplainer(model.predict_proba, feature_values)
+    shap_values = explainer.shap_values(feature_values)
     
     shap_values_for_class_1 = shap_values[1] if len(shap_values) > 1 else shap_values[0]
     
