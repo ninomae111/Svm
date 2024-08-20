@@ -120,8 +120,8 @@ if st.button("Predict"):
     st.write("### SHAP Force Plot for Class 1")
     shap.force_plot(explainer.expected_value[1], shap_values[1], feature_values, feature_names=feature_names)
 
-    # 使用st_shap函数来显示图像
-    def st_shap(plot, height=None):
+# 使用st_shap函数来显示图像
+def st_shap(plot, height=None):
     """Helper function to display SHAP plots in Streamlit."""
     shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
     st.components.v1.html(shap_html, height=height)
