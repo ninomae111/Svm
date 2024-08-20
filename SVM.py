@@ -12,7 +12,7 @@ from sklearn.model_selection import train_test_split
 model = joblib.load('SVMNEW.pkl')
 
 # Define feature options
-use_calcium_channel_blockers_options = {
+ccb_options = {
     0: 'No',
     1: 'Yes'
 }
@@ -64,7 +64,7 @@ feature_names = [
 st.title("Bowel Preparation Predictor")
 
 # CCB: categorical selection
-ccb = st.selectbox("Use calcium channel blockers:", options=list(use_calcium_channel_blockers_options.keys()), format_func=lambda x: use_calcium_channel_blockers_options[x])
+ccb = st.selectbox("CCB:", options=list(ccb.keys()), format_func=lambda x: ccb_options[x])
 
 # Last bowel movement was clear liquid: categorical selection
 last_bowel_movement_was_clear_liquid = st.selectbox("Last bowel movement was clear liquid:", options=list(last_bowel_movement_was_clear_liquid_options.keys()), format_func=lambda x: last_bowel_movement_was_clear_liquid_options[x])
