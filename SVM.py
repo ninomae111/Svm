@@ -3,6 +3,7 @@ import shap
 import matplotlib.pyplot as plt
 import joblib
 import numpy as np
+import pandas as pd
 
 # 加载SVM模型
 model = joblib.load('SVMNEW.pkl')
