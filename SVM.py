@@ -108,20 +108,16 @@ if st.button("Predict"):
         )
 
     st.write(advice)
-
-    # 假设 k = 0，因为只有一个样本
-k = 0
-if features is None:
-    display_features = ["" for i in range(len(feature_names))]
-else:
-    # 检查features的形状，确保不超过索引
-    if features.shape[0] > k:
-        display_features = features[k, :]
-    else:
-        display_features = features[0, :]  # 或者你可以调整索引逻辑，确保使用有效索引
     
-    # 创建 SHAP KernelExplainer
-    explainer = shap.KernelExplainer(model.predict_proba, feature_values)
+df = pd.read_csv('建模 - 副本240610.csv')
+# 划分特征和目标变量
+X = df.drop(['Fail'], axis=1)
+y = df['Fail']
+# 划分训练集和测试集
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=72, stratify=df['Fail'])
+
+   # 创建 SHAP KernelExplainer
+    explainer = shap.KernelExplainer(model_to_explain.predict, X_train)
     shap_values = explainer.shap_values(feature_values)
 
     # 显示两个类别的 SHAP 力图
