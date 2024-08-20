@@ -112,14 +112,13 @@ if st.button("Predict"):
 
     st.write(advice)
 
-# Calculate SHAP values and display force plot
-explainer = shap.KernelExplainer(model.predict_proba, np.array(features).reshape(1, -1))  
-shap_values = explainer.shap_values(np.array(features).reshape(1, -1))
+   # Calculate SHAP values using KernelExplainer with the provided features
+    explainer = shap.KernelExplainer(model.predict_proba, features)
+    shap_values = explainer.shap_values(features)
 
-# Since your model is binary, there might be only one set of SHAP values
-# Access SHAP values for the first class (assuming class 1 is indexed at 0)
-shap_values_for_class_1 = shap_values[1] if len(shap_values) > 1 else shap_values[0]
+    # Extract SHAP values for the class of interest (e.g., class 1)
+    shap_values_for_class_1 = shap_values[1] if len(shap_values) > 1 else shap_values[0]
 
-# Display SHAP force plot in Streamlit
-shap.force_plot(explainer.expected_value[1], shap_values_for_class_1[0], pd.DataFrame([feature_values], columns=feature_names), matplotlib=True)
-st.pyplot(plt.gcf())  
+    # Display SHAP force plot in Streamlit
+    shap.force_plot(explainer.expected_value[1], shap_values_for_class_1[0], pd.DataFrame([feature_values], columns=feature_names), matplotlib=True)
+    st.pyplot(plt.gcf())  # Display the plot in Streamlit
