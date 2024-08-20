@@ -106,7 +106,7 @@ if st.button("Predict"):
     st.write(advice)
 
    # 使用 SHAP 解释 SVM 模型
-    model_to_explain = models
+    model_to_explain = model
 
     # 假设 custom_data 是一个包含具体参数的数据框
     custom_data = pd.DataFrame(params, columns=X_train.columns)
