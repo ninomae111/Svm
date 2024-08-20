@@ -95,9 +95,13 @@ else:
     # 如果只有一个类别
     shap_value = shap_values[0]
 
+# 确保传递给force_plot的数据是单个样本的SHAP值和特征
+shap_value = shap_value[0]  # 取出第一个样本的SHAP值
+input_data_sample = input_data[0]  # 取出第一个样本的特征
+
 # 绘制单个样本的SHAP力图
 st.subheader("SHAP力图展示")
-shap.force_plot(explainer.expected_value[0], shap_value[0, :], input_data[0, :], matplotlib=True)
+shap.force_plot(explainer.expected_value[0], shap_value, input_data_sample, feature_names=feature_names, matplotlib=True)
 
 # 将图像显示在Streamlit中
 st.pyplot(bbox_inches='tight')
