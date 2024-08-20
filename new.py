@@ -105,13 +105,18 @@ if st.button("Predict"):
 
     st.write(advice)
 
-    # Explain prediction using SHAP
-    explainer = shap.KernelExplainer(model.predict_proba, X_train)
-    shap_values = explainer.shap_values(features)
-    shap_values_for_class_1 = shap_values[1] if len(shap_values) > 1 else shap_values[0]
-    
-    if len(shap_values_for_class_1[0]) == len(feature_names):
-        shap.force_plot(explainer.expected_value[1], shap_values_for_class_1[0], features, matplotlib=True)
-        st.pyplot(plt.gcf())
-    else:
-        st.error("Mismatch between feature and SHAP values dimensions.")
+# 创建 SHAP Explainer 对象，使用 predict_proba
+explainer = shap.KernelExplainer(model_to_explain.predict_proba, X_train, link="identity")
+
+# 计算 SHAP 值，使用正类（失败类别）的 SHAP 值
+shap_values = explainer.shap_values(custom_data)
+
+# 确定正确的类别索引，例如类别 1 表示失败
+fail_class_index = 1  # 假设类别 1 表示失败
+
+# 绘制局部解释，使用失败类别的 SHAP 值
+shap.initjs()
+force_plot = shap.force_plot(explainer.expected_value[fail_class_index], shap_values[fail_class_index][0], custom_data.iloc[0, :])
+file_name = "force_plot_" + str(time.time()) + ".html"
+shap.save_html("./" + file_name, force_plot)
+return file_name
