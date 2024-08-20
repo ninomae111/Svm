@@ -149,6 +149,7 @@ if st.button("Predict"):
     print(f"Predicted probability of outcome 1: {predicted_proba}") 
 
     # 绘制局部解释 
-    shap.initjs() force_plot = shap.force_plot(explainer.expected_value[1], shap_values[1][0], custom_data.iloc[0, :]) 
+    shap.initjs() 
+    force_plot = shap.force_plot(explainer.expected_value[1], shap_values[1][0], custom_data.iloc[0, :]) 
     file_name = "force_plot_" + str(time.time()) + ".html" shap.save_html("./" + file_name, force_plot) 
     return file_name
