@@ -91,9 +91,7 @@ feature_values = [
     activity_level, 
     education
 ]
-
-# Process inputs and make predictions
-features = pd.DataFrame([feature_values], columns=feature_names)
+features = np.array([feature_values])
 
 if st.button("Predict"):
     # Predict class and probabilities
