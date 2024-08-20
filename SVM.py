@@ -75,14 +75,14 @@ activity_level = st.selectbox("Activity level:", options=list(activity_level_opt
 education = st.selectbox("Education:", options=list(education_options.keys()), format_func=lambda x: education_options[x])
 
 # Process inputs and make predictions
-feature_values = [ccb, last_bowel_movement_was_clear_liquid, split_dose, in_hospital_bowel_preparation, 
+features = [ccb, last_bowel_movement_was_clear_liquid, split_dose, in_hospital_bowel_preparation, 
     bowel_movement_status, activity_level, education]
-features = np.array([feature_values])
+feature_values = np.array([features])
 
 if st.button("Predict"):
     # Predict class and probabilities
-    predicted_class = model.predict(features)[0]
-    predicted_proba = model.predict_proba(features)[0]
+    predicted_class = model.predict(feature_values)[0]
+    predicted_proba = model.predict_proba(feature_values)[0]
 
     # Display prediction results
     st.write(f"**Predicted Class:** {predicted_class}")
