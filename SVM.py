@@ -125,22 +125,20 @@ if st.button("Predict"):
 
     st.write(advice)
 
-   # SHAP Explanation (optional)
+    # SHAP Explanation (optional)
     explainer = shap.KernelExplainer(model.predict_proba, shap.sample(features, nsamples=100))
     shap_values = explainer.shap_values(features)
 
     # 输出 SHAP 值的形状以进行调试
     st.write(f"SHAP values shape: {np.array(shap_values).shape}")
 
-    shap_values_for_class_1 = shap_values[1] if len(shap_values) > 1 else shap_values[0]
-    
-    # 输出特征名称长度和 SHAP 值的特征维度长度
-    st.write(f"Feature names length: {len(feature_names)}")
-    st.write(f"SHAP values feature dimension: {shap_values_for_class_1.shape[1]}")
+    # 选择特定类别的 SHAP 值（例如，正类别）
+    class_index = 1  # 可以根据需要选择 0 或 1，取决于您想要解释哪个类别
+    shap_values_for_class = shap_values[class_index]
 
     # Check if SHAP values match the feature length
-    if shap_values_for_class_1.shape[1] == len(feature_names):
-        shap.force_plot(explainer.expected_value[1], shap_values_for_class_1[0], features, feature_names=feature_names, matplotlib=True)
+    if shap_values_for_class.shape[1] == len(feature_names):
+        shap.force_plot(explainer.expected_value[class_index], shap_values_for_class[0], features.iloc[0], feature_names=feature_names, matplotlib=True)
         st.pyplot(plt.gcf())
     else:
         st.error("Mismatch between feature and SHAP values dimensions.")
