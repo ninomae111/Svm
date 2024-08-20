@@ -109,7 +109,7 @@ if st.button("Predict"):
     st.write(advice)
     
  # Calculate SHAP values and display force plot
-     explainer = shap.KernelExplainer(model.predict_proba, features)
+    explainer = shap.KernelExplainer(model.predict_proba, features)
     shap_values = explainer.shap_values(features)
 
     shap.force_plot(explainer.expected_value, shap_values[0], pd.DataFrame([feature_values], columns=feature_names), matplotlib=True)
