@@ -108,11 +108,16 @@ if st.button("Predict"):
 
     st.write(advice)
     
- # Calculate SHAP values and display force plot
-    explainer = shap.KernelExplainer(model.predict_proba, features)
-    shap_values = explainer.shap_values(features)
+# Calculate SHAP values using KernelExplainer with the provided features
+    explainer = shap.KernelExplainer(model.predict_proba, np.array(features).reshape(1, -1))
+    shap_values = explainer.shap_values(np.array(features).reshape(1, -1))
 
-    shap.force_plot(explainer.expected_value, shap_values[0], pd.DataFrame([feature_values], columns=feature_names), matplotlib=True)
-    plt.savefig("shap_force_plot.png", bbox_inches='tight', dpi=1200)
+    # Use only the SHAP values for class 1 (the second class in binary classification)
+    shap_values_for_class_1 = shap_values[1] if len(shap_values) > 1 else shap_values[0]
 
-    st.image("shap_force_plot.png")
+    # Ensure dimensions match before plotting
+    if len(shap_values_for_class_1[0]) == len(feature_names):
+        shap.force_plot(explainer.expected_value[1], shap_values_for_class_1[0], pd.DataFrame([feature_values], columns=feature_names), matplotlib=True)
+        st.pyplot(plt.gcf())  # Display the plot in Streamlit
+    else:
+        st.error("Mismatch between feature and SHAP values dimensions.")
