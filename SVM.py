@@ -119,9 +119,17 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 
 model_to_explain = model
 
+# 假设 custom_data 是一个包含具体参数的数据框
+    custom_data = params
+    print("custom_data is:")
+    print(custom_data)
+    print("normal_data is:")
+    print(params)
+    custom_data = pd.DataFrame(custom_data, columns=X_train.columns)
+
 # 创建 SHAP Explainer 对象
 explainer = shap.KernelExplainer(model_to_explain.predict, X_train)
-shap_values = explainer.shap_values(feature_values)
+shap_values = explainer.shap_values(custom_data)
 
 # 绘制局部解释
 shap.initjs()
