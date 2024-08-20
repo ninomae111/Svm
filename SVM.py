@@ -109,17 +109,19 @@ if st.button("Predict"):
         )
 
     st.write(advice)
+    
+custom_data = pd.DataFrame(params)
+if st.button("Predict"):
+    predicted_class = model.predict(custom_data)[0]
+    predicted_proba = model.predict_proba(custom_data)[0]
 
-   # Calculate SHAP values using KernelExplainer with the provided features
-    explainer = shap.KernelExplainer(model.predict_proba, features)
-    shap_values = explainer.shap_values(features)
-
-    # Use only the SHAP values for class 1 (the second class in binary classification)
-    shap_values_for_class_1 = shap_values[1] if len(shap_values) > 1 else shap_values[0]
-
-    # Ensure dimensions match before plotting
-    if len(shap_values_for_class_1[0]) == len(feature_names):
-        shap.force_plot(explainer.expected_value[1], shap_values_for_class_1[0], pd.DataFrame([feature_values], columns=feature_names), matplotlib=True)
-        st.pyplot(plt.gcf())  # Display the plot in Streamlit
-    else:
-        st.error("Mismatch between feature and SHAP values dimensions.")
+    st.write(f"**Predicted Class:** {predicted_class}")
+    st.write(f"**Prediction Probabilities:** {predicted_proba}")
+    
+    # 使用 SHAP 解释模型
+    explainer = shap.KernelExplainer(model.predict_proba, custom_data)
+    shap_values = explainer.shap_values(custom_data)
+    
+    shap.initjs()
+    force_plot = shap.force_plot(explainer.expected_value[0], shap_values[0], custom_data)
+    st.pyplot(shap.force_plot(explainer.expected_value[0], shap_values[0], custom_data))
