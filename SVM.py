@@ -90,10 +90,10 @@ feature_values = np.array([
     bowel_movement_status, 
     activity_level, 
     education
-]).reshape(1, -1)  # 转换为NumPy数组
+])  # 保持一维数组，然后转换为二维数组
 
-# Convert features to DataFrame
-features = pd.DataFrame(feature_values, columns=feature_names)
+# Convert to DataFrame (ensure 2D input)
+features = pd.DataFrame([feature_values], columns=feature_names)
 
 if st.button("Predict"):
     # Predict class and probabilities
