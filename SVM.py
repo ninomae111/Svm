@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
 # Load the model
-model = joblib.load('SVM.pkl')
+model = joblib.load('SVMNEW.pkl')
 
 # Define feature options
 ccb_options = {
