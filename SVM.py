@@ -37,7 +37,7 @@ bowel_movement_status_options = {
 
 activity_level_options = {
     0: 'Frequently walking',
-    1: 'Frequently walking'
+    1: 'Occasionally walking'
 }
 
 education_options = {
