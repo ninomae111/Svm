@@ -5,7 +5,7 @@ import joblib
 import numpy as np
 
 # 加载SVM模型
-model = joblib.load('SVMNEW.pkl')
+model = joblib.load('SVM.pkl')
 
 # 定义特征选项
 use_calcium_channel_blockers_options = {
@@ -87,9 +87,18 @@ st.write(dict(zip(feature_names, input_data.flatten())))
 explainer = shap.KernelExplainer(model.predict_proba, input_data)
 shap_values = explainer.shap_values(input_data)
 
+# 检查shap_values的结构
+if len(shap_values) > 1:
+    # 如果有多个类别，选择其中一个（例如：第一个）
+    shap_value = shap_values[1]  # 根据需要调整索引
+else:
+    # 如果只有一个类别
+    shap_value = shap_values[0]
+
 # 绘制SHAP力图
 st.subheader("SHAP力图展示")
-shap.force_plot(explainer.expected_value[1], shap_values[1], input_data, matplotlib=True)
+shap.force_plot(explainer.expected_value[0], shap_value, input_data, matplotlib=True)
 
 # 将图像显示在Streamlit中
 st.pyplot(bbox_inches='tight')
+
