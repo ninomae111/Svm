@@ -145,7 +145,8 @@ if st.button("Predict"):
 
     # 计算并展示结局为 1 的概率 
     # 由于 SVC 的 predict_proba 返回的是两个类别的概率，这里我们选择第二个类别（即结局为1）的概率 
-    predicted_proba = model_to_explain.predict_proba(custom_data)[:, 1] print(f"Predicted probability of outcome 1: {predicted_proba}") 
+    predicted_proba = model_to_explain.predict_proba(custom_data)[:, 1] 
+    print(f"Predicted probability of outcome 1: {predicted_proba}") 
 
     # 绘制局部解释 
     shap.initjs() force_plot = shap.force_plot(explainer.expected_value[1], shap_values[1][0], custom_data.iloc[0, :]) 
