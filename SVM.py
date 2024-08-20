@@ -127,5 +127,5 @@ shap_values = explainer.shap_values(feature_values)
 shap.initjs()
 force_plot = shap.force_plot(explainer.expected_value, shap_values[0], feature_values.iloc[0, :])
 file_name = "force_plot_" + ".html"
-shap.save_html("./" + file_name, force_plot)
-st.pyplot(plt.gcf())
+shap.save_html("force_plot.html", force_plot)
+st.components.v1.html(open("force_plot.html").read(), height=400)
