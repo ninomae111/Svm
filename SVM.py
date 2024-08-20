@@ -109,18 +109,21 @@ if st.button("Predict"):
 
     st.write(advice)
 
-# Generate SHAP values
-    explainer = shap.KernelExplainer(model.predict_proba, feature_values)
-    shap_values = explainer.shap_values(feature_values)
+# 计算 SHAP 值
+shap_values = explainer.shap_values(feature_values)
 
-    # Plot SHAP force plot for the prediction
-    shap.initjs()
-    st.write("### SHAP Force Plot")
-    
-    shap_force_plot = shap.force_plot(explainer.expected_value[1], shap_values[1][0], feature_values, feature_names=feature_names)
-    st_shap(shap_force_plot)
+# 显示两个类别的 SHAP 力图
+st.write("### SHAP Force Plot for Class 0")
+shap.force_plot(explainer.expected_value[0], shap_values[0], feature_values, feature_names=feature_names)
 
+st.write("### SHAP Force Plot for Class 1")
+shap.force_plot(explainer.expected_value[1], shap_values[1], feature_values, feature_names=feature_names)
+
+# 使用st_shap函数来显示图像
 def st_shap(plot, height=None):
     """Helper function to display SHAP plots in Streamlit."""
     shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
     st.components.v1.html(shap_html, height=height)
+
+st_shap(shap.force_plot(explainer.expected_value[0], shap_values[0], feature_values, feature_names=feature_names))
+st_shap(shap.force_plot(explainer.expected_value[1], shap_values[1], feature_values, feature_names=feature_names))
