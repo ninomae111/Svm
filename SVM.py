@@ -77,7 +77,6 @@ education = st.selectbox("Education:", options=list(education_options.keys()), f
 # Process inputs and make predictions
 features = [ccb, last_bowel_movement_was_clear_liquid, split_dose, in_hospital_bowel_preparation, 
     bowel_movement_status, activity_level, education]
-feature_values = np.array([features])
 feature_values = pd.DataFrame([features])
 
 if st.button("Predict"):
