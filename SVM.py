@@ -7,6 +7,14 @@ import matplotlib.pyplot as plt
 
 # Load the model
 model = joblib.load('SVMNEW.pkl')
+X_train, X_valid, y_train, y_valid = train_test_split(X, y, test_size=0.3, random_state=72)
+
+    # 训练和验证每个模型
+    for name, model in models.items():
+        model.fit(X_train, y_train)
+        predictions = model.predict(X_valid)
+        accuracy = accuracy_score(y_valid, predictions)
+        print(f"{name} validation accuracy: {accuracy:.4f}")
 
 # Define feature options
 use_calcium_channel_blockers_options = {
@@ -125,16 +133,21 @@ if st.button("Predict"):
 
     st.write(advice)
 
-    # Calculate SHAP values using KernelExplainer with the provided features
-    explainer = shap.KernelExplainer(model.predict_proba, features)
-    shap_values = explainer.shap_values(features)
+    # 使用 SHAP 解释 SVM 模型
+    model_to_explain = models["SVM"]
 
-    # Use only the SHAP values for class 1 (the second class in binary classification)
-    shap_values_for_class_1 = shap_values[1] if len(shap_values) > 1 else shap_values[0]
+    # 假设 custom_data 是一个包含具体参数的数据框
+    custom_data = pd.DataFrame(params, columns=X_train.columns)
+    
+    # 创建 SHAP Explainer 对象
+    explainer = shap.KernelExplainer(model_to_explain.predict_proba, X_train)
+    shap_values = explainer.shap_values(custom_data)
 
-    # Ensure dimensions match before plotting
-    if shap_values_for_class_1.shape[1] == len(feature_names):
-        shap.force_plot(explainer.expected_value[1], shap_values_for_class_1[0], feature_names, matplotlib=True)
-        st.pyplot(plt.gcf())  # Display the plot in Streamlit
-    else:
-        st.error("Mismatch between feature and SHAP values dimensions.")
+    # 计算并展示结局为 1 的概率 
+    # 由于 SVC 的 predict_proba 返回的是两个类别的概率，这里我们选择第二个类别（即结局为1）的概率 
+    predicted_proba = model_to_explain.predict_proba(custom_data)[:, 1] print(f"Predicted probability of outcome 1: {predicted_proba}") 
+
+    # 绘制局部解释 
+    shap.initjs() force_plot = shap.force_plot(explainer.expected_value[1], shap_values[1][0], custom_data.iloc[0, :]) 
+    file_name = "force_plot_" + str(time.time()) + ".html" shap.save_html("./" + file_name, force_plot) 
+    return file_name
