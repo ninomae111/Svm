@@ -47,10 +47,8 @@ education_options = {
 }
 
 # Define feature names
-feature_names = [
-    'CCB', 'Last bowel movement was clear liquid', 'Split-dose',
-    'In hospital bowel preparation', 'Bowel movement status', 'Activity level', 'Education'
-]
+feature_names = ['CCB', 'Last bowel movement was clear liquid', 'Split dose',
+                'In hospital bowel preparation', 'Bowel movement status', 'Activity level', 'Education']
 
 # Streamlit user interface
 st.title("Bowel Preparation Predictor")
@@ -62,7 +60,7 @@ ccb = st.selectbox("Use calcium channel blockers:", options=list(use_calcium_cha
 last_bowel_movement_was_clear_liquid = st.selectbox("Last bowel movement was clear liquid:", options=list(last_bowel_movement_was_clear_liquid_options.keys()), format_func=lambda x: last_bowel_movement_was_clear_liquid_options[x])
 
 # Split-dose: categorical selection
-split_dose = st.selectbox("Split-dose:", options=list(split_dose_options.keys()), format_func=lambda x: split_dose_options[x])
+split_dose = st.selectbox("Split dose:", options=list(split_dose_options.keys()), format_func=lambda x: split_dose_options[x])
 
 # In-hospital bowel preparation: categorical selection
 in_hospital_bowel_preparation = st.selectbox("In-hospital bowel preparation:", options=list(in_hospital_bowel_preparation_options.keys()), format_func=lambda x: in_hospital_bowel_preparation_options[x])
