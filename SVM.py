@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import shap
 import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
 
 # Load the model
 model = joblib.load('SVM.pkl')
