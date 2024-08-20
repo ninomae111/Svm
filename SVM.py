@@ -128,8 +128,17 @@ if st.button("Predict"):
     # 使用 SHAP 解释 SVM 模型
     model_to_explain = model
 
-    # 假设 custom_data 是一个包含具体参数的数据框
-    custom_data = pd.DataFrame(feature_values, columns=feature_names.columns)
+    # If params is a dictionary:
+    params = {'CCB': [1], 'Last bowel movement was clear liquid': [0], 'Split dose': [1],
+          'In hospital bowel preparation': [1], 'Bowel movement status': [2],
+          'Activity level': [0], 'Education': [3]}
+
+    # Create DataFrame from params
+    custom_data = pd.DataFrame(params)
+
+    # Or, if params is a list of values:
+    params = [1, 0, 1, 1, 2, 0, 3]
+    custom_data = pd.DataFrame([params], columns=X_train.columns)
     
     # 创建 SHAP Explainer 对象
     explainer = shap.KernelExplainer(model_to_explain.predict_proba, feature_names)
