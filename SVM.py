@@ -64,7 +64,7 @@ feature_names = [
 st.title("Bowel Preparation Predictor")
 
 # CCB: categorical selection
-ccb = st.selectbox("CCB:", options=list(ccb.keys()), format_func=lambda x: ccb_options[x])
+ccb = st.selectbox("CCB:", options=list(ccb_options.keys()), format_func=lambda x: ccb_options[x])
 
 # Last bowel movement was clear liquid: categorical selection
 last_bowel_movement_was_clear_liquid = st.selectbox("Last bowel movement was clear liquid:", options=list(last_bowel_movement_was_clear_liquid_options.keys()), format_func=lambda x: last_bowel_movement_was_clear_liquid_options[x])
