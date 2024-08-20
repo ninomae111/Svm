@@ -5,7 +5,7 @@ import joblib
 import numpy as np
 
 # 加载SVM模型
-model = joblib.load('SVM.pkl')
+model = joblib.load('SVMNEW.pkl')
 
 # 定义特征选项
 use_calcium_channel_blockers_options = {
