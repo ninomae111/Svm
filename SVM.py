@@ -95,18 +95,6 @@ feature_values = [
 # Process inputs and make predictions
 features = pd.DataFrame([feature_values], columns=feature_names)
 
-# SHAP Explanation (optional)
-explainer = shap.KernelExplainer(model.predict_proba, features)
-shap_values = explainer.shap_values(features)
-    
-shap_values_for_class_1 = shap_values[1] if len(shap_values) > 1 else shap_values[0]
-    
-if len(shap_values_for_class_1[0]) == len(feature_names):
-    shap.force_plot(explainer.expected_value[1], shap_values_for_class_1[0], pd.DataFrame([feature_values], columns=feature_names), matplotlib=True)
-    st.pyplot(plt.gcf())
-else:
-    st.error("Mismatch between feature and SHAP values dimensions.")
-
 if st.button("Predict"):
     # Predict class and probabilities
     predicted_class = model.predict(features)[0]
@@ -136,3 +124,38 @@ if st.button("Predict"):
         )
 
     st.write(advice)
+
+    # SHAP Explanation (optional)
+    explainer = shap.KernelExplainer(model.predict_proba, features)
+    shap_values = explainer.shap_values(features)
+    
+    shap_values_for_class_1 = shap_values[1] if len(shap_values) > 1 else shap_values[0]
+    
+    if len(shap_values_for_class_1[0]) == len(feature_names):
+        shap.force_plot(explainer.expected_value[1], shap_values_for_class_1[0], pd.DataFrame([feature_values], columns=feature_names), matplotlib=True)
+        st.pyplot(plt.gcf())
+    else:
+        st.error("Mismatch between feature and SHAP values dimensions.")
+
+# If params is a dictionary:
+params = {'CCB': [1], 'Last bowel movement was clear liquid': [0], 'Split dose': [1],
+          'In hospital bowel preparation': [1], 'Bowel movement status': [2],
+          'Activity level': [0], 'Education': [3]}
+
+# Create DataFrame from params
+custom_data = pd.DataFrame(params)
+
+# Or, if params is a list of values:
+params = [1, 0, 1, 1, 2, 0, 3]
+custom_data = pd.DataFrame([params], columns=feature_names.columns)
+
+# SHAP explanation
+    explainer = shap.KernelExplainer(model.predict_proba, X_train)
+    shap_values = explainer.shap_values(features)
+    shap_values_for_class_1 = shap_values[1] if len(shap_values) > 1 else shap_values[0]
+
+    if len(shap_values_for_class_1[0]) == len(feature_names):
+        shap.force_plot(explainer.expected_value[1], shap_values_for_class_1[0], pd.DataFrame([feature_values], columns=feature_names), matplotlib=True)
+        st.pyplot(plt.gcf())
+    else:
+        st.error("Mismatch between feature and SHAP values dimensions.")
