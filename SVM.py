@@ -75,8 +75,11 @@ activity_level = st.selectbox("Activity level:", options=list(activity_level_opt
 education = st.selectbox("Education:", options=list(education_options.keys()), format_func=lambda x: education_options[x])
 
 # Process inputs and make predictions
-feature_values = [ccb, last_bowel_movement_was_clear_liquid, split_dose, in_hospital_bowel_preparation, bowel_movement_status, activity_level, education]
-features = np.array([feature_values])
+feature_values = [ccb, last_bowel_movement_was_clear_liquid, split_dose,
+                  in_hospital_bowel_preparation, bowel_movement_status, activity_level, education]
+
+# Convert features to DataFrame to match the format used during training
+features = pd.DataFrame([feature_values], columns=feature_names)
 
 if st.button("Predict"):
     # Predict class and probabilities
