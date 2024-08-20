@@ -112,7 +112,7 @@ if st.button("Predict"):
 model_to_explain = model
 
 # 创建 SHAP Explainer 对象
-explainer = shap.KernelExplainer(model.predict_proba(features))
+explainer = shap.KernelExplainer(model.predict_proba, features)
 shap_values = explainer.shap_values(features)
 
 # 绘制局部解释
