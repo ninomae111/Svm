@@ -108,6 +108,17 @@ if st.button("Predict"):
         )
 
     st.write(advice)
+
+    # 假设 k = 0，因为只有一个样本
+k = 0
+if features is None:
+    display_features = ["" for i in range(len(feature_names))]
+else:
+    # 检查features的形状，确保不超过索引
+    if features.shape[0] > k:
+        display_features = features[k, :]
+    else:
+        display_features = features[0, :]  # 或者你可以调整索引逻辑，确保使用有效索引
     
     # 创建 SHAP KernelExplainer
     explainer = shap.KernelExplainer(model.predict_proba, feature_values)
@@ -119,17 +130,6 @@ if st.button("Predict"):
 
     st.write("### SHAP Force Plot for Class 1")
     shap.force_plot(explainer.expected_value[1], shap_values[1], feature_values, feature_names=feature_names)
-
-# 假设 k = 0，因为只有一个样本
-k = 0
-if features is None:
-    display_features = ["" for i in range(len(feature_names))]
-else:
-    # 检查features的形状，确保不超过索引
-    if features.shape[0] > k:
-        display_features = features[k, :]
-    else:
-        display_features = features[0, :]  # 或者你可以调整索引逻辑，确保使用有效索引
 
 # 使用st_shap函数来显示图像
 def st_shap(plot, height=None):
