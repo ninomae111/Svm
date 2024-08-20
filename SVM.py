@@ -24,7 +24,7 @@ split_dose_options = {
     1: 'Yes'
 }
 
-in——hospital_bowel_preparation_options = {
+in_hospital_bowel_preparation_options = {
     0: 'No',
     1: 'Yes'
 }
@@ -49,7 +49,7 @@ education_options = {
 # Define feature names
 feature_names = [
     'CCB', 'Last bowel movement was clear liquid', 'Split-dose',
-    'In-hospital bowel preparation', 'Bowel movement status', 'Activity level', 'Education'
+    'In hospital bowel preparation', 'Bowel movement status', 'Activity level', 'Education'
 ]
 
 # Streamlit user interface
@@ -65,7 +65,7 @@ last_bowel_movement_was_clear_liquid = st.selectbox("Last bowel movement was cle
 split_dose = st.selectbox("Split-dose:", options=list(split_dose_options.keys()), format_func=lambda x: split_dose_options[x])
 
 # In-hospital bowel preparation: categorical selection
-in——hospital_bowel_preparation = st.selectbox("In-hospital_bowel_preparation:", options=list(in_hospital_bowel_preparation_options.keys()), format_func=lambda x: in_hospital_bowel_preparationin_options[x])
+in_hospital_bowel_preparation = st.selectbox("In_hospital_bowel_preparation:", options=list(in_hospital_bowel_preparation_options.keys()), format_func=lambda x: in_hospital_bowel_preparationin_options[x])
 
 # Bowel movement status: categorical selection
 bowel_movement_status = st.selectbox("Bowel movement status:", options=list(bowel_movement_status_options.keys()), format_func=lambda x: bowel_movement_status_options[x])
@@ -78,7 +78,7 @@ education = st.selectbox("Education:", options=list(education_options.keys()), f
 
 # Process inputs and make predictions
 feature_values = [ccb, last_bowel_movement_was_clear_liquid, split_dose,
-                  in——hospital_bowel_preparation, bowel_movement_status, activity_level, education]
+                  in_hospital_bowel_preparation, bowel_movement_status, activity_level, education]
 
 features = np.array([feature_values])
 
