@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 
 # Load the model
 model = joblib.load('SVM.pkl')
+model.fit(X_train, y_train)
 
 # Define feature options
 use_calcium_channel_blockers_options = {
@@ -113,7 +114,7 @@ if st.button("Predict"):
     st.write(advice)
 
 # Calculate SHAP values and display force plot
-explainer = shap.KernelExplainer(model)  
+explainer = shap.KernelExplainer(model.predict_proba, X_train)  
 shap_values = explainer.shap_values(pd.DataFrame([feature_values], columns=feature_names))
 
 # Display SHAP force plot in Streamlit
