@@ -95,10 +95,9 @@ else:
     # 如果只有一个类别
     shap_value = shap_values[0]
 
-# 绘制SHAP力图
+# 绘制单个样本的SHAP力图
 st.subheader("SHAP力图展示")
-shap.force_plot(explainer.expected_value[0], shap_value, input_data, matplotlib=True)
+shap.force_plot(explainer.expected_value[0], shap_value[0, :], input_data[0, :], matplotlib=True)
 
 # 将图像显示在Streamlit中
 st.pyplot(bbox_inches='tight')
-
