@@ -138,22 +138,3 @@ if st.button("Predict"):
         st.pyplot(plt.gcf())  # Display the plot in Streamlit
     else:
         st.error("Mismatch between feature and SHAP values dimensions.")
-
-# Debugging: Print out the feature names and values
-print("Feature Names:", feature_names)
-print("Feature Values:", feature_values)
-
-# Convert feature values to DataFrame
-features = pd.DataFrame([feature_values], columns=feature_names)
-print("Features DataFrame:\n", features)
-
-# Debugging: Check the shape of shap_values
-shap_values = explainer.shap_values(features)
-print("SHAP Values Shape:", shap_values.shape)
-
-# Debugging: Ensure SHAP values dimensions match feature names
-if shap_values[0].shape[1] != len(feature_names):
-    print("Mismatch between SHAP values and feature names dimensions")
-else:
-    print("SHAP values and feature names dimensions match")
-
