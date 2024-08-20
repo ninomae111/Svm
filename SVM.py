@@ -116,16 +116,16 @@ y = df['Fail']
 # 划分训练集和测试集
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=72, stratify=df['Fail'])
 
-   # 创建 SHAP KernelExplainer
-    explainer = shap.KernelExplainer(model_to_explain.predict, X_train)
-    shap_values = explainer.shap_values(feature_values)
+# 创建 SHAP KernelExplainer
+explainer = shap.KernelExplainer(model_to_explain.predict, X_train)
+shap_values = explainer.shap_values(feature_values)
 
-    # 显示两个类别的 SHAP 力图
-    st.write("### SHAP Force Plot for Class 0")
-    shap.force_plot(explainer.expected_value[0], shap_values[0], feature_values, feature_names=feature_names)
+# 显示两个类别的 SHAP 力图
+st.write("### SHAP Force Plot for Class 0")
+shap.force_plot(explainer.expected_value[0], shap_values[0], feature_values, feature_names=feature_names)
 
-    st.write("### SHAP Force Plot for Class 1")
-    shap.force_plot(explainer.expected_value[1], shap_values[1], feature_values, feature_names=feature_names)
+st.write("### SHAP Force Plot for Class 1")
+shap.force_plot(explainer.expected_value[1], shap_values[1], feature_values, feature_names=feature_names)
 
 # 使用st_shap函数来显示图像
 def st_shap(plot, height=None):
