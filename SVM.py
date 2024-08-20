@@ -124,7 +124,7 @@ custom_data = feature_values
 print("custom_data is:")
 print(custom_data)
 print("normal_data is:")
-print(params)
+print(feature_values)
 custom_data = pd.DataFrame(custom_data, columns=X_train.columns)
 
 # 创建 SHAP Explainer 对象
