@@ -110,13 +110,13 @@ if st.button("Predict"):
     st.write(advice)
 
     # SHAP Explanation (optional)
-    explainer = shap.KernelExplainer(model.predict_proba, features)
-    shap_values = explainer.shap_values(features)
+    explainer = shap.KernelExplainer(model.predict_proba, feature_values)
+    shap_values = explainer.shap_values(feature_values)
     
     shap_values_for_class_1 = shap_values[1] if len(shap_values) > 1 else shap_values[0]
     
     if len(shap_values_for_class_1[0]) == len(feature_names):
-        shap.force_plot(explainer.expected_value[1], shap_values_for_class_1[0], pd.DataFrame([features], columns=features), matplotlib=True)
+        shap.force_plot(explainer.expected_value[1], shap_values_for_class_1[0], pd.DataFrame([features], columns=features))
         st.pyplot(plt.gcf())
     else:
         st.error("Mismatch between feature and SHAP values dimensions.")
