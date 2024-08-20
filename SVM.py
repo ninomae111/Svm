@@ -6,7 +6,7 @@ import shap
 import matplotlib.pyplot as plt
 
 # Load the model
-model = joblib.load('SVM.pkl')
+model = joblib.load('SVMNEW.pkl')
 
 # Define feature options
 use_calcium_channel_blockers_options = {
@@ -118,10 +118,11 @@ if st.button("Predict"):
     st.write(f"**Predicted Class:** {predicted_class}")
     st.write(f"**Prediction Probabilities:** {predicted_proba}")
     
-    # 使用 SHAP 解释模型
-    explainer = shap.KernelExplainer(model.predict_proba, custom_data)
-    shap_values = explainer.shap_values(custom_data)
-    
-    shap.initjs()
-    force_plot = shap.force_plot(explainer.expected_value[0], shap_values[0], custom_data)
-    st.pyplot(shap.force_plot(explainer.expected_value[0], shap_values[0], custom_data))
+ # Calculate SHAP values and display force plot
+    explainer = shap.KernelExplainer(model)
+    shap_values = explainer.shap_values(pd.DataFrame([feature_values], columns=feature_names))
+
+    shap.force_plot(explainer.expected_value, shap_values[0], pd.DataFrame([feature_values], columns=feature_names), matplotlib=True)
+    plt.savefig("shap_force_plot.png", bbox_inches='tight', dpi=1200)
+
+    st.image("shap_force_plot.png")
