@@ -88,20 +88,23 @@ explainer = shap.KernelExplainer(model.predict_proba, input_data)
 shap_values = explainer.shap_values(input_data)
 
 # 检查shap_values的结构
+st.write(f"SHAP Values shape: {np.array(shap_values).shape}")
+st.write(f"Input Data shape: {input_data.shape}")
+
 if len(shap_values) > 1:
     # 如果有多个类别，选择其中一个（例如：第一个）
-    shap_value = shap_values[1]  # 根据需要调整索引
+    shap_value = shap_values[1][0]  # 选择第一个样本的SHAP值
 else:
     # 如果只有一个类别
-    shap_value = shap_values[0]
+    shap_value = shap_values[0][0]
 
 # 确保传递给force_plot的数据是单个样本的SHAP值和特征
-shap_value = shap_value[0]  # 取出第一个样本的SHAP值
-input_data_sample = input_data[0]  # 取出第一个样本的特征
+st.write(f"Selected SHAP Value shape: {shap_value.shape}")
+st.write(f"Feature Names length: {len(feature_names)}")
 
 # 绘制单个样本的SHAP力图
 st.subheader("SHAP力图展示")
-shap.force_plot(explainer.expected_value[0], shap_value, input_data_sample, feature_names=feature_names, matplotlib=True)
+shap.force_plot(explainer.expected_value[0], shap_value, input_data[0], feature_names=feature_names, matplotlib=True)
 
 # 将图像显示在Streamlit中
 st.pyplot(bbox_inches='tight')
