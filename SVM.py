@@ -138,7 +138,7 @@ if st.button("Predict"):
         st.error("Mismatch between feature and SHAP values dimensions.")
 
 # SHAP explanation
-explainer = shap.KernelExplainer(model.predict_proba, feature)
+explainer = shap.KernelExplainer(model.predict_proba, features)
 shap_values = explainer.shap_values(features)
 shap_values_for_class_1 = shap_values[1] if len(shap_values) > 1 else shap_values[0]
 
