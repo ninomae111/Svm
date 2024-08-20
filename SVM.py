@@ -117,6 +117,8 @@ y = df['Fail']
 # 划分训练集和测试集
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=72, stratify=df['Fail'])
 
+model_to_explain = model
+
 # 创建 SHAP KernelExplainer
 explainer = shap.KernelExplainer(model_to_explain.predict, X_train)
 shap_values = explainer.shap_values(feature_values)
