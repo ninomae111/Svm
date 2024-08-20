@@ -7,14 +7,6 @@ import matplotlib.pyplot as plt
 
 # Load the model
 model = joblib.load('SVMNEW.pkl')
-X_train, X_valid, y_train, y_valid = train_test_split(X, y, test_size=0.3, random_state=72)
-
-# 训练和验证每个模型
-for name, model in models.items():
-    model.fit(X_train, y_train)
-    predictions = model.predict(X_valid)
-    accuracy = accuracy_score(y_valid, predictions)
-    print(f"{name} validation accuracy: {accuracy:.4f}")
 
 # Define feature options
 use_calcium_channel_blockers_options = {
