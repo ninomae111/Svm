@@ -133,7 +133,7 @@ if st.button("Predict"):
     st.write(f"SHAP values shape: {np.array(shap_values).shape}")
 
     # 选择特定类别的 SHAP 值（例如，正类别）
-    class_index = 1  # 可以根据需要选择 0 或 1，取决于您想要解释哪个类别
+    class_index = 0  # 可以根据需要选择 0 或 1，取决于您想要解释哪个类别
     shap_values_for_class = shap_values[class_index]
 
     # Check if SHAP values match the feature length
