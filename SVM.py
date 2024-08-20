@@ -95,17 +95,17 @@ feature_values = [
 # Process inputs and make predictions
 features = pd.DataFrame([feature_values], columns=feature_names)
 
-    # SHAP Explanation (optional)
-    explainer = shap.KernelExplainer(model.predict_proba, features)
-    shap_values = explainer.shap_values(features)
+# SHAP Explanation (optional)
+explainer = shap.KernelExplainer(model.predict_proba, features)
+shap_values = explainer.shap_values(features)
     
-    shap_values_for_class_1 = shap_values[1] if len(shap_values) > 1 else shap_values[0]
+shap_values_for_class_1 = shap_values[1] if len(shap_values) > 1 else shap_values[0]
     
-    if len(shap_values_for_class_1[0]) == len(feature_names):
-        shap.force_plot(explainer.expected_value[1], shap_values_for_class_1[0], pd.DataFrame([feature_values], columns=feature_names), matplotlib=True)
-        st.pyplot(plt.gcf())
-    else:
-        st.error("Mismatch between feature and SHAP values dimensions.")
+if len(shap_values_for_class_1[0]) == len(feature_names):
+    shap.force_plot(explainer.expected_value[1], shap_values_for_class_1[0], pd.DataFrame([feature_values], columns=feature_names), matplotlib=True)
+    st.pyplot(plt.gcf())
+else:
+    st.error("Mismatch between feature and SHAP values dimensions.")
 
 if st.button("Predict"):
     # Predict class and probabilities
