@@ -112,10 +112,10 @@ if st.button("Predict"):
 
     st.write(advice)
 
-    # Calculate SHAP values and display force plot
-    explainer = shap.TreeExplainer(model)
-    shap_values = explainer.shap_values(pd.DataFrame([feature_values], columns=feature_names))
+# Calculate SHAP values and display force plot
+explainer = shap.KernelExplainer(model.predict_proba, X_train)  
+shap_values = explainer.shap_values(pd.DataFrame([feature_values], columns=feature_names))
 
-    # Display SHAP force plot in Streamlit
-    shap.force_plot(explainer.expected_value, shap_values[0], pd.DataFrame([feature_values], columns=feature_names), matplotlib=True)
-    st.pyplot(plt.gcf())  # Display the plot in Streamlit
+# Display SHAP force plot in Streamlit
+shap.force_plot(explainer.expected_value[1], shap_values[1][0], pd.DataFrame([feature_values], columns=feature_names), matplotlib=True)
+st.pyplot(plt.gcf())  # Display the plot in Streamlit
