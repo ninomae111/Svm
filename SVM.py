@@ -119,22 +119,20 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 
 model_to_explain = model
 
-# 创建 SHAP KernelExplainer
-explainer = shap.KernelExplainer(model_to_explain.predict, X_train)
-shap_values = explainer.shap_values(feature_values)
+# 假设 custom_data 是一个包含具体参数的数据框
+    custom_data = params
+    print("custom_data is:")
+    print(custom_data)
+    print("normal_data is:")
+    print(params)
+    custom_data = pd.DataFrame(custom_data, columns=X_train.columns)
 
-# 显示两个类别的 SHAP 力图
-st.write("### SHAP Force Plot for Class 0")
-shap.force_plot(explainer.expected_value[0], shap_values[0], feature_values, feature_names=feature_names)
+    # 创建 SHAP Explainer 对象
+    explainer = shap.KernelExplainer(model_to_explain.predict, X_train)
+    shap_values = explainer.shap_values(custom_data)
 
-st.write("### SHAP Force Plot for Class 1")
-shap.force_plot(explainer.expected_value[1], shap_values[1], feature_values, feature_names=feature_names)
-
-# 使用st_shap函数来显示图像
-def st_shap(plot, height=None):
-    """Helper function to display SHAP plots in Streamlit."""
-    shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
-    st.components.v1.html(shap_html, height=height)
-
-    st_shap(shap.force_plot(explainer.expected_value[0], shap_values[0], feature_values, feature_names=feature_names))
-    st_shap(shap.force_plot(explainer.expected_value[1], shap_values[1], feature_values, feature_names=feature_names))
+    # 绘制局部解释
+    shap.initjs()
+    force_plot = shap.force_plot(explainer.expected_value, shap_values[0], custom_data.iloc[0, :])
+    file_name = "force_plot_" + str(time.time()) + ".html"
+    shap.save_html("./" + file_name, force_plot)
