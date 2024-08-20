@@ -117,7 +117,7 @@ if st.button("Predict"):
     shap.initjs()
     st.write("### SHAP Force Plot")
     
-    shap_force_plot = shap.force_plot(explainer.expected_value[1], shap_values[1], feature_values, feature_names=feature_names)
+    shap_force_plot = shap.force_plot(explainer.expected_value[1], shap_values[1][0], custom_data.iloc[0, :])
     st_shap(shap_force_plot)
 
 def st_shap(plot, height=None):
