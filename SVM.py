@@ -129,7 +129,7 @@ if st.button("Predict"):
     model_to_explain = model
 
     # 假设 custom_data 是一个包含具体参数的数据框
-    custom_data = pd.DataFrame(params, columns=X_train.columns)
+    custom_data = pd.DataFrame(feature_values, columns=X_train.columns)
     
     # 创建 SHAP Explainer 对象
     explainer = shap.KernelExplainer(model_to_explain.predict_proba, X_train)
