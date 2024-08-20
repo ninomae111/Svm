@@ -117,4 +117,4 @@ shap_values = explainer.shap_values(features)
 
 # 绘制局部解释
 shap.initjs()
-shap.force_plot(explainer.expected_value, shap_values[0], X_valid.iloc[0, :])
+shap.force_plot(explainer.expected_value, shap_values[0], features.iloc[0, :])
