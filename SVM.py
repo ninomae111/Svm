@@ -126,5 +126,5 @@ shap_values = explainer.shap_values(feature_values)
 # 绘制局部解释
 shap.initjs()
 force_plot = shap.force_plot(explainer.expected_value, shap_values[0], feature_values.iloc[0, :])
-file_name = "force_plot_" + str(time.time()) + ".html"
+file_name = "force_plot_" + ".html"
 shap.save_html("./" + file_name, force_plot)
