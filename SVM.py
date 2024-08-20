@@ -125,7 +125,7 @@ print("custom_data is:")
 print(custom_data)
 print("normal_data is:")
 print(params)
-custom_data = pd.DataFrame(custom_data, columns=X_train.columns)
+custom_data = pd.DataFrame(custom_data, columns=X_train.columns)
 
 # 创建 SHAP Explainer 对象
 explainer = shap.KernelExplainer(model_to_explain.predict, X_train)
