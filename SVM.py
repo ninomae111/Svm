@@ -4,9 +4,6 @@ import numpy as np
 import pandas as pd
 import shap
 import matplotlib.pyplot as plt
-from sklearn.svm import SVC
-from sklearn.datasets import make_classification
-from sklearn.model_selection import train_test_split
 
 # Load the model
 model = joblib.load('SVMNEW.pkl')
@@ -85,7 +82,7 @@ activity_level = st.selectbox("Activity level:", options=list(activity_level_opt
 education = st.selectbox("Education:", options=list(education_options.keys()), format_func=lambda x: education_options[x])
 
 # Process inputs and make predictions
-feature_values = [
+feature_values = np.array([
     ccb, 
     last_bowel_movement_was_clear_liquid, 
     split_dose,
@@ -93,10 +90,10 @@ feature_values = [
     bowel_movement_status, 
     activity_level, 
     education
-]
+]).reshape(1, -1)  # 转换为NumPy数组
 
-# Process inputs and make predictions
-features = pd.DataFrame([feature_values], columns=feature_names)
+# Convert features to DataFrame
+features = pd.DataFrame(feature_values, columns=feature_names)
 
 if st.button("Predict"):
     # Predict class and probabilities
@@ -129,13 +126,14 @@ if st.button("Predict"):
     st.write(advice)
 
     # SHAP Explanation (optional)
-    explainer = shap.KernelExplainer(model.predict_proba, feature_values)
-    shap_values = explainer.shap_values(feature_values)
+    explainer = shap.KernelExplainer(model.predict_proba, shap.sample(features, nsamples=100))
+    shap_values = explainer.shap_values(features)
     
     shap_values_for_class_1 = shap_values[1] if len(shap_values) > 1 else shap_values[0]
     
-    if len(shap_values_for_class_1[0]) == len(feature_names):
-        shap.force_plot(explainer.expected_value[1], shap_values_for_class_1[0], pd.DataFrame([feature_values], columns=feature_names), matplotlib=True)
+    # Check if SHAP values match the feature length
+    if shap_values_for_class_1.shape[1] == len(feature_names):
+        shap.force_plot(explainer.expected_value[1], shap_values_for_class_1[0], features, feature_names=feature_names, matplotlib=True)
         st.pyplot(plt.gcf())
     else:
         st.error("Mismatch between feature and SHAP values dimensions.")
