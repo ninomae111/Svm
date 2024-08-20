@@ -129,10 +129,10 @@ if st.button("Predict"):
     model_to_explain = model
 
     # 假设 custom_data 是一个包含具体参数的数据框
-    custom_data = pd.DataFrame(feature_values, columns=X_train.columns)
+    custom_data = pd.DataFrame(feature_values, columns=feature_names.columns)
     
     # 创建 SHAP Explainer 对象
-    explainer = shap.KernelExplainer(model_to_explain.predict_proba, X_train)
+    explainer = shap.KernelExplainer(model_to_explain.predict_proba, feature_names)
     shap_values = explainer.shap_values(custom_data)
 
     # 计算并展示结局为 1 的概率 
