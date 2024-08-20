@@ -75,9 +75,7 @@ activity_level = st.selectbox("Activity level:", options=list(activity_level_opt
 education = st.selectbox("Education:", options=list(education_options.keys()), format_func=lambda x: education_options[x])
 
 # Process inputs and make predictions
-feature_values = [ccb, last_bowel_movement_was_clear_liquid, split_dose,
-                  in_hospital_bowel_preparation, bowel_movement_status, activity_level, education]
-
+feature_values = [ccb, last_bowel_movement_was_clear_liquid, split_dose, in_hospital_bowel_preparation, bowel_movement_status, activity_level, education]
 features = np.array([feature_values])
 
 if st.button("Predict"):
@@ -109,14 +107,6 @@ if st.button("Predict"):
         )
 
     st.write(advice)
-    
-custom_data = pd.DataFrame(params)
-if st.button("Predict"):
-    predicted_class = model.predict(custom_data)[0]
-    predicted_proba = model.predict_proba(custom_data)[0]
-
-    st.write(f"**Predicted Class:** {predicted_class}")
-    st.write(f"**Prediction Probabilities:** {predicted_proba}")
     
  # Calculate SHAP values and display force plot
     explainer = shap.KernelExplainer(model)
