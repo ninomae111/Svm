@@ -119,33 +119,12 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 
 model_to_explain = model
 
-# 假设 custom_data 是一个包含具体参数的数据框
-custom_data = feature_values
-print("custom_data is:")
-print(custom_data)
-print("normal_data is:")
-print(feature_values)
-
-# 检查 custom_data 是否有缺失值或无效值
-print(custom_data.isnull().sum())  # 检查缺失值
-print(np.isfinite(custom_data).all())  # 检查无效值
-
-# 确保数据类型正确
-print(custom_data.dtypes)
-
-# 如果发现问题，您可以使用以下方式处理数据
-custom_data = custom_data.dropna()  # 删除缺失值行
-custom_data = custom_data.apply(pd.to_numeric, errors='coerce')  # 将所有列转换为数值类型
-custom_data = custom_data.fillna(0)  # 使用0替换所有缺失值
-
-custom_data = pd.DataFrame(custom_data, columns=X_train.columns)
-
 # 创建 SHAP Explainer 对象
 explainer = shap.KernelExplainer(model_to_explain.predict, X_train)
-shap_values = explainer.shap_values(custom_data)
+shap_values = explainer.shap_values(feature_values)
 
 # 绘制局部解释
 shap.initjs()
-force_plot = shap.force_plot(explainer.expected_value, shap_values[0], custom_data.iloc[0, :])
+force_plot = shap.force_plot(explainer.expected_value, shap_values[0], feature_values.iloc[0, :])
 file_name = "force_plot_" + str(time.time()) + ".html"
 shap.save_html("./" + file_name, force_plot)
