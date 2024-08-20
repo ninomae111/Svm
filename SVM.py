@@ -78,7 +78,7 @@ education = st.selectbox("Education:", options=list(education_options.keys()), f
 # Process inputs and make predictions
 features = [ccb, last_bowel_movement_was_clear_liquid, split_dose, in_hospital_bowel_preparation, 
     bowel_movement_status, activity_level, education]
-feature_values = pd.DataFrame([features])
+feature_values = pd.DataFrame([features], columns=feature_names)
 
 if st.button("Predict"):
     # Predict class and probabilities
@@ -125,7 +125,7 @@ shap_values = explainer.shap_values(feature_values)
 
 # 绘制局部解释
 shap.initjs()
-force_plot = shap.force_plot(explainer.expected_value, shap_values[0], feature_values.iloc[0, :])
+force_plot = shap.force_plot(explainer.expected_value, shap_values[0], feature_values.iloc[0, :], feature_names=feature_values.columns)
 file_name = "force_plot_" + ".html"
 shap.save_html("force_plot.html", force_plot)
 st.components.v1.html(open("force_plot.html").read(), height=400)
