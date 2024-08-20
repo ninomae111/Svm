@@ -6,7 +6,7 @@ import shap
 import matplotlib.pyplot as plt
 
 # Load the model
-model = joblib.load('SVM.pkl')
+model = joblib.load('SVMNEW.pkl')
 
 # Define feature options
 ccb_options = {
