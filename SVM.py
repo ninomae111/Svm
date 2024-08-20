@@ -47,8 +47,8 @@ education_options = {
 }
 
 # Define feature names
-feature_names = ['CCB', 'Last bowel movement was clear liquid', 'Split dose',
-                'In hospital bowel preparation', 'Bowel movement status', 'Activity level', 'Education']
+feature_names = [ccb, last_bowel_movement_was_clear_liquid, split_dose,
+                  in_hospital_bowel_preparation, bowel_movement_status, activity_level, education]
 
 # Streamlit user interface
 st.title("Bowel Preparation Predictor")
