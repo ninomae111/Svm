@@ -95,24 +95,24 @@ feature_values = [
 # Process inputs and make predictions
 features = pd.DataFrame([feature_values], columns=feature_names)
 
-    # 使用 SHAP 解释 SVM 模型
-    model_to_explain = model
+# 使用 SHAP 解释 SVM 模型
+model_to_explain = model
   
-    # 创建 SHAP Explainer 对象
-    explainer = shap.KernelExplainer(model_to_explain.predict_proba, feature_names)
-    shap_values = explainer.shap_values(custom_data)
+# 创建 SHAP Explainer 对象
+explainer = shap.KernelExplainer(model_to_explain.predict_proba, feature_names)
+shap_values = explainer.shap_values(custom_data)
 
-    # 计算并展示结局为 1 的概率 
-    # 由于 SVC 的 predict_proba 返回的是两个类别的概率，这里我们选择第二个类别（即结局为1）的概率 
-    predicted_proba = model_to_explain.predict_proba(custom_data)[:, 1] 
-    print(f"Predicted probability of outcome 1: {predicted_proba}") 
+# 计算并展示结局为 1 的概率 
+# 由于 SVC 的 predict_proba 返回的是两个类别的概率，这里我们选择第二个类别（即结局为1）的概率 
+predicted_proba = model_to_explain.predict_proba(custom_data)[:, 1] 
+print(f"Predicted probability of outcome 1: {predicted_proba}") 
 
-    # 绘制局部解释 
-    shap.initjs() 
-    force_plot = shap.force_plot(explainer.expected_value[1], shap_values[1][0], custom_data.iloc[0, :]) 
-    file_name = "force_plot_" + str(time.time()) + ".html" 
-    shap.save_html("./" + file_name, force_plot) 
-    st.pyplot(plt.gcf())
+# 绘制局部解释 
+shap.initjs() 
+force_plot = shap.force_plot(explainer.expected_value[1], shap_values[1][0], custom_data.iloc[0, :]) 
+file_name = "force_plot_" + str(time.time()) + ".html" 
+shap.save_html("./" + file_name, force_plot) 
+st.pyplot(plt.gcf())
 
 if st.button("Predict"):
     # Predict class and probabilities
