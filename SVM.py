@@ -128,3 +128,4 @@ shap.initjs()
 force_plot = shap.force_plot(explainer.expected_value, shap_values[0], feature_values.iloc[0, :])
 file_name = "force_plot_" + ".html"
 shap.save_html("./" + file_name, force_plot)
+st.pyplot(plt.gcf())
