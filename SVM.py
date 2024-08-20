@@ -91,7 +91,7 @@ feature_values = [
     activity_level, 
     education
 ]
-features = pd.DataFrame([feature_values], columns=feature_names)
+features = np.array([feature_values])
 
 if st.button("Predict"):
     # Predict class and probabilities
@@ -125,12 +125,9 @@ if st.button("Predict"):
 
     # SHAP Explanation (optional)
     explainer = shap.KernelExplainer(model.predict_proba, feature_values)
-    shap_values = explainer.shap_values(feature_values)
+    shap_values = explainer.shap_values(pd.DataFrame([feature_values], columns=feature_names))
     
-    shap_values_for_class_1 = shap_values[1] if len(shap_values) > 1 else shap_values[0]
-    
-    if len(shap_values_for_class_1[0]) == len(feature_names):
-        shap.force_plot(explainer.expected_value[1], shap_values_for_class_1[0], pd.DataFrame([feature_values], columns=feature_names), matplotlib=True)
-        st.pyplot(plt.gcf())
-    else:
-        st.error("Mismatch between feature and SHAP values dimensions.")
+    shap.force_plot(explainer.expected_value, shap_values[0], pd.DataFrame([feature_values], columns=feature_names), matplotlib=True)
+    plt.savefig("shap_force_plot.png", bbox_inches='tight', dpi=1200)
+
+    st.image("shap_force_plot.png")
