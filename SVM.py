@@ -92,7 +92,7 @@ feature_values = [
     education
 ]
 
-# Convert features to DataFrame to match the format used during training
+# Process inputs and make predictions
 features = pd.DataFrame([feature_values], columns=feature_names)
 
 if st.button("Predict"):
@@ -124,16 +124,16 @@ if st.button("Predict"):
         )
 
     st.write(advice)
-    
-# Calculate SHAP values using KernelExplainer with the provided features
-    explainer = shap.KernelExplainer(model.predict_proba, np.array(features).reshape(1, -1))
-    shap_values = explainer.shap_values(np.array(features).reshape(1, -1))
+
+    # Calculate SHAP values using KernelExplainer with the provided features
+    explainer = shap.KernelExplainer(model.predict_proba, features)
+    shap_values = explainer.shap_values(features)
 
     # Use only the SHAP values for class 1 (the second class in binary classification)
     shap_values_for_class_1 = shap_values[1] if len(shap_values) > 1 else shap_values[0]
 
     # Ensure dimensions match before plotting
-    if len(shap_values_for_class_1[0]) == len(feature_names):
+    if shap_values_for_class_1.shape[1] == len(feature_names):
         shap.force_plot(explainer.expected_value[1], shap_values_for_class_1[0], feature_names, matplotlib=True)
         st.pyplot(plt.gcf())  # Display the plot in Streamlit
     else:
