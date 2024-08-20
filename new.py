@@ -115,8 +115,8 @@ shap_values = explainer.shap_values(custom_data)
 fail_class_index = 1  # 假设类别 1 表示失败
 
  # 绘制局部解释 
-    shap.initjs() 
-    force_plot = shap.force_plot(explainer.expected_value[1], shap_values[1][0], custom_data.iloc[0, :]) 
-    file_name = "force_plot_" + str(time.time()) + ".html" 
-    shap.save_html("./" + file_name, force_plot) 
-    st.pyplot(plt.gcf())
+shap.initjs() 
+force_plot = shap.force_plot(explainer.expected_value[1], shap_values[1][0], custom_data.iloc[0, :]) 
+file_name = "force_plot_" + str(time.time()) + ".html" 
+shap.save_html("./" + file_name, force_plot) 
+st.pyplot(plt.gcf())
