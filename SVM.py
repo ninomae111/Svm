@@ -6,6 +6,7 @@ import numpy as np
 
 # 加载SVM模型
 model = joblib.load('SVMNEW.pkl')
+X_test = pd.read_csv('建模-副本240610.csv')
 
 # 定义特征选项
 use_calcium_channel_blockers_options = {
@@ -84,8 +85,8 @@ st.write("输入的数据为:")
 st.write(dict(zip(feature_names, input_data.flatten())))
 
 # 计算SHAP值
-explainer = shap.KernelExplainer(model.predict_proba, input_data)
-shap_values = explainer.shap_values(input_data)
+explainer = shap.KernelExplainer(model.predict_proba, X_test)
+shap_values = explainer.shap_values(X_test)
 
 # 检查 shap_values 的长度并选择正确的类别
 st.write(f"SHAP Values shape: {np.array(shap_values).shape}")
