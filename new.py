@@ -105,18 +105,23 @@ if st.button("Predict"):
 
     st.write(advice)
 
-# 创建 SHAP Explainer 对象，使用 predict_proba
-explainer = shap.KernelExplainer(model_to_explain.predict_proba, X_train, link="identity")
+   # 使用 SHAP 解释 SVM 模型
+    model_to_explain = models
 
-# 计算 SHAP 值，使用正类（失败类别）的 SHAP 值
-shap_values = explainer.shap_values(custom_data)
+    # 假设 custom_data 是一个包含具体参数的数据框
+    custom_data = pd.DataFrame(params, columns=X_train.columns)
+    
+    # 创建 SHAP Explainer 对象
+    explainer = shap.KernelExplainer(model_to_explain.predict_proba, X_train)
+    shap_values = explainer.shap_values(custom_data)
 
-# 确定正确的类别索引，例如类别 1 表示失败
-fail_class_index = 1  # 假设类别 1 表示失败
+    # 计算并展示结局为 1 的概率
+    # 由于 SVC 的 predict_proba 返回的是两个类别的概率，这里我们选择第二个类别（即结局为1）的概率
+    predicted_proba = model_to_explain.predict_proba(custom_data)[:, 1]
+    print(f"Predicted probability of outcome 1: {predicted_proba}")
 
- # 绘制局部解释 
-shap.initjs() 
-force_plot = shap.force_plot(explainer.expected_value[1], shap_values[1][0], custom_data.iloc[0, :]) 
-file_name = "force_plot_" + str(time.time()) + ".html" 
-shap.save_html("./" + file_name, force_plot) 
-st.pyplot(plt.gcf())
+    # 绘制局部解释
+    shap.initjs()
+    force_plot = shap.force_plot(explainer.expected_value[1], shap_values[1][0], custom_data.iloc[0, :])
+    file_name = "force_plot_" + str(time.time()) + ".html"
+    shap.save_html("./" + file_name, force_plot)
